@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from pathlib import Path
 
 
 class AdaUnitWriter:
@@ -40,12 +41,15 @@ class AdaUnitWriter:
 
 
 @contextmanager
-def create_ada_unit_file(filename):
-    with open(filename, 'w') as file:
-        writer = AdaUnitWriter(file=file)
+def create_ada_package_spec(unit_name: str, output_folder):
+    filename = Path(output_folder) / f'{unit_name.lower().replace('.', '-')}.ads'
 
+    with open(filename, 'w') as file:
         try:
+            writer = AdaUnitWriter(file=file)
+            writer.start_package_spec(unit_name)
             yield writer
 
         finally:
-            pass
+            writer.end_package_spec()
+            writer.write_line()
