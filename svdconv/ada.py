@@ -4,6 +4,7 @@ from contextlib import contextmanager
 class AdaUnitWriter:
     def __init__(self, file):
         self._file = file
+        self._package_name = None
 
     def write_line(self, line_text: str):
         print(line_text, file=self._file)
@@ -15,9 +16,10 @@ class AdaUnitWriter:
     def start_package_spec(self, unit_name: str):
         self.write_line(f'package {unit_name}')
         self.write_line('is')
+        self._package_name = unit_name
 
-    def end_package_spec(self, unit_name: str):
-        self.write_line(f'end {unit_name};')
+    def end_package_spec(self):
+        self.write_line(f'end {self._package_name};')
 
     def add_object_decl(self, identifier: str, subtype_mark: str, init_expr=None,
                         aliased=False, constant=False):
