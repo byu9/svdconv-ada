@@ -6,7 +6,7 @@ class AdaUnitWriter:
         self._file = file
         self._package_name = None
 
-    def write_line(self, line_text: str):
+    def write_line(self, line_text: str = ''):
         print(line_text, file=self._file)
 
     def write_comment(self, text: str):
